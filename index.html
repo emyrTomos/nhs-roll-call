@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>NHS Roll Call</title>
+		<script type="text/javascript" src="calendar/calendar.js"></script>
+        <link rel="stylesheet" href="calendar/calendar.css">
+        <link rel="stylesheet" href="calendar/common/index.css?v=6.4.2">
+		<link rel="stylesheet" href="calendar/common/suite.css?v=6.4.2">
+		<style type="text/css">
+			select.times {
+				overflow: hidden;
+				display: inline-block;
+				width: 250px;
+				border: 1px solid black;
+				overflow: none;
+			}
+			select.times option {
+				display: block;
+				border-bottom: 1px solid black;
+				width: 250px;
+				box-sizing: border-box;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="calendar_container"></div>
+		<div id="time_selector">
+		</div>
+
+		<table>
+			<thead>
+				<th>
+					<td>Date</td>
+					<td>From</td>
+					<td>To</td>
+				</th>
+			</thead>
+			<tbody>
+				<tr>
+					<td></td>
+					<td></td>
+					<td></td>
+				</tr>
+			</tbody>
+		</table>
+		<script type="text/javascript">
+			(function(){
+				const calendar = new dhx.Calendar("calendar_container");
+				const statusTypes = {
+					available: "Fit and able",
+					isolating: "Vulnerable family members",
+					diagnosed: "Confirmed case of COVID-19",
+					suspected: "COVID-19 like symptoms",
+					unwell: "Other symptoms",
+					childcare: "Childcare responsibilities",
+					transit: "Travel time"
+				}				
+				const user = {
+					name: "Jane Doe",
+					nhsID : "",
+					defaultAsAvailable: false,
+					resource: {
+						type: "General medcine",
+						validated: true
+					},
+					location: "Postcode",
+					reachableLocations: [
+						"Postcode", "Postcode", "Postcode"
+					],
+					timesAvailable: {
+					}
+				}
+				calendar.events.on("Change",function(date, oldDate, click){
+					console.log(user)
+					let year = date.getFullYear()
+					let month = date.getMonth() +1
+					let day = date.getDate()
+					console.log(year, month, day)
+					document.getElementById("time_selector").innerHTML = `<div id="show-date">${date}</div>`
+
+					if (!!!user.timesAvailable[year]) {
+						user.timesAvailable[year] = {}
+					}
+
+					if (!!!user.timesAvailable[year][month]) {
+						user.timesAvailable[year][month] = {}
+					}
+
+					if (!!!user.timesAvailable[year][month][day]) {
+						user.timesAvailable[year][month][day] = []
+					}
+
+					const availability = user.timesAvailable[year][month][day]
+					let hours = document.createElement('select')
+					hours.setAttribute('multiple', 'true')
+					hours.setAttribute('size', '24')
+					hours.setAttribute('class', 'times')
+					const changer = function(ev) {
+						const oldDropDown = document.getElementById('change_status')
+						if (oldDropDown) {
+							oldDropDown.parentNode.removeChild(oldDropDown)
+						}
+						let dropDown = document.createElement('select')
+						dropDown.setAttribute('id', 'change_status')
+						dropDown.setAttribute('size', Object.keys(statusTypes).length)
+						const result = []
+						const selected = ev.srcElement.querySelectorAll('option:checked')
+						for(var i = 0; i< selected.length; i++) {
+							result.push(selected[i].value)							
+						}
+						console.log(ev, this, ev.srcElement, selected, result)
+						Object.keys(statusTypes).forEach(function(status){
+							let option = document.createElement('option')
+							option.innerText = statusTypes[status]
+
+							dropDown.appendChild(option)
+							option.setAttribute('value', status)
+							option.setAttribute('class', status)
+							dropDown.appendChild(option)
+						})
+						dropDown.addEventListener('change', function(ev) {
+							console.log('Change ', this, ev)
+							for(var i = 0; i< selected.length; i++) {
+								availability[selected[i].value] = this.value
+								selected[i].setAttribute('class', this.value)
+								const displayValue = (parseInt(selected[i].value) + 1)
+								selected[i].innerText = displayValue + " : " + statusTypes[this.value]
+							}
+						})
+						document.getElementById("time_selector").appendChild(dropDown)			
+					}
+
+					for(let i = 0; i < 24; i++) {
+						let option = document.createElement('option')
+						if (!!!availability[i]) {
+							if (user.defaultAsAvailable) {
+								availability[i] = 'available'
+							} else {
+								availability[i] = 'unavailable'
+							}
+						}
+							option.innerText = (i + 1) + ' : ' + (statusTypes[availability[i]] || 'N/A')
+						option.setAttribute('value', i)
+						if (availability[i]) {
+							option.setAttribute('class', availability[i])
+						}
+						hours.appendChild(option)
+						hours.addEventListener('change', changer)
+					}
+					document.getElementById("time_selector").appendChild(hours)			
+
+
+
+				});
+			})()
+
+/* 
+Data format for posting availability: 
+timesAvailable: [
+	{date: 12, month: 4, year: 2020, start: "10:00", duration: "08:00"}, 
+	{date: 13, month: 4, year: 2020, start: "08:00", duration: "04:00"}
+]
+
+*/
+						
+		</script>
+	</body>
+</html>
+
+
+
+
+ 
