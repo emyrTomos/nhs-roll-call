@@ -23,8 +23,22 @@
 		</style>
 	</head>
 	<body>
+		<div id="app">
+		  <h1>Roll Call</h1>
+		  <p>
+		  	{{message}}  
+		  </p>
+			<div><router-link to="/login">Log in</router-link></div>
+			<div><router-link to="/register">Sign up</router-link></div>
+  <router-view></router-view>
+</div>
+<!-- 		<div id="app">
+				    <router-link to="/foo">Go to Foo</router-link>
+		 	   <router-link to="/bar">Go to Bar</router-link>
+		</div>
+ --> 
 		<div id="calendar_container"></div>
-		<div id="time_selector">
+<!-- 		<div id="time_selector">
 		</div>
 
 		<table>
@@ -43,7 +57,7 @@
 				</tr>
 			</tbody>
 		</table>
-		<script type="text/javascript" src="nhs-roll-call.js"></script>
+ -->		<script type="text/javascript" src="nhs-roll-call.js"></script>
 		<script type="text/javascript">
 /* 
 Data format for posting availability: 

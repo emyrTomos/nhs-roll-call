@@ -4,12 +4,13 @@ function Fetcher(config){
   this.config = config
 }
 
-Fetcher.prototype = Object.create(Notifier.prototype);
+Fetcher.prototype = Object.create(Object.prototype);
 Fetcher.prototype.constructor = Fetcher
 
 Fetcher.prototype.create = function(path, user, payload) {
 	const method = "POST"
-	
+	return user
+
 };
 
 Fetcher.prototype.retieve = function(path, user, payload) {
