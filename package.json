@@ -1,0 +1,32 @@
+{
+  "name": "nhs-roll-call",
+  "version": "1.0.0",
+  "description": "Allows NHS staff to declare their availability or unavailability for rotaing",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "install": "scripts/install.sh"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/emyrTomos/nhs-roll-call.git"
+  },
+  "browser": {
+    "vue": "vue/dist/vue.common.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/emyrTomos/nhs-roll-call/issues"
+  },
+  "homepage": "https://github.com/emyrTomos/nhs-roll-call#readme",
+  "dependencies": {
+    "@fullcalendar/core": "^4.4.0",
+    "vue": "^2.6.11"
+  },
+  "devDependencies": {
+    "grunt": "^1.1.0",
+    "grunt-browserify": "^5.3.0",
+    "vueify": "^9.4.1"
+  }
+}

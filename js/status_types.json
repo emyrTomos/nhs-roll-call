@@ -1,0 +1,11 @@
+{ "statusTypes": 
+	{
+		"available": "Fit and able",
+		"isolating": "Vulnerable family members",
+		"diagnosed": "Confirmed case of COVID-19",
+		"suspected": "COVID-19 like symptoms",
+		"unwell": "Other symptoms",
+		"childcare": "Childcare responsibilities",
+		"transit": "Travel time"
+	}
+}

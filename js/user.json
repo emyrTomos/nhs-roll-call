@@ -1,0 +1,43 @@
+{
+"name": "Jane Doe",
+    "resource": {
+        "resourceType": "General medicine",
+        "verified": true
+    },
+    "location": "Postcode",
+    "workLocation": "Location name (possibly postcode)",
+    "reachableLocations": [
+        "Postcode",
+        "Postcode",
+        "Postcode"
+    ],
+    "timesAvailable": [
+        {
+            "date": 12,
+            "month": 4,
+            "year": 2020,
+            "start": "10:00",
+            "duration": "20:00"
+        },
+        {
+            "date": 13,
+            "month": 4,
+            "year": 2020,
+            "start": "08:00",
+            "duration": "12:00"
+        }
+    ],
+    "timesUnavailable": [
+        { "time" : {
+            "date": 12,
+            "month": 4,
+            "year": 2020,
+            "start": "10:00",
+            "duration": "20:00"
+        },
+        "reason" : ""
+
+        }
+    ],
+    "defaultAsAvailable": true
+}
