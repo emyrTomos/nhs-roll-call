@@ -1,9 +1,10 @@
 {
 "name": "Jane Doe",
     "resource": {
-        "resourceType": "General medicine",
+        "resourceType": "SHO",
         "verified": true
     },
+    "resourceId": 1234,
     "location": "Postcode",
     "workLocation": "Location name (possibly postcode)",
     "reachableLocations": [

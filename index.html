@@ -14,30 +14,32 @@
 				border: 1px solid black;
 				overflow: none;
 			}
+			h1 {
+				text-align: center;
+			}
 			select.times option {
 				display: block;
 				border-bottom: 1px solid black;
 				width: 250px;
 				box-sizing: border-box;
 			}
+			.nhs-logo {
+				display: block;
+				margin: auto;
+				width: 70%;
+			}
 		</style>
 	</head>
 	<body>
 		<div id="app">
-		  <h1>Roll Call</h1>
-		  <p>
-		  	{{message}}  
-		  </p>
-			<div><router-link to="/login">Log in</router-link></div>
-			<div><router-link to="/register">Sign up</router-link></div>
-  <router-view></router-view>
+		<img src="static/images/NHS-Logo.svg" class="nhs-logo" alt="NHS Logo" />
+<router-view></router-view>
 </div>
 <!-- 		<div id="app">
 				    <router-link to="/foo">Go to Foo</router-link>
 		 	   <router-link to="/bar">Go to Bar</router-link>
 		</div>
  --> 
-		<div id="calendar_container"></div>
 <!-- 		<div id="time_selector">
 		</div>
 

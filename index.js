@@ -1,38 +1,78 @@
 			(function(){
-				const statusTypes = require('./js/status_types.json')
-				console.log(statusTypes)
-				const user = require('./js/user.json')
+				const statusTypes = require('./js/data/status_types.json')
+				const staffTypes = require('./js/data/staff_types.json')
+				const user = require('./js/data/user.json')
 				const Vue = require('vue')
 				const VueRouter = require('vue-router');
 				Vue.use(VueRouter)
-				const Login = { template: `<div>
-					<p>Enter your NHS Id number and password to login securely</p>
-					<div><input type="text" name="nhs_id"  placeholder="NHS ID Number" /></div>
-					<div><input type="password" name="password"   placeholder="Password" /></div>
-					<button>Enter</button>
-				</div>` }
-				const Register = { template: `<div>
-					<p>To get started, let us know what your role is</p>
-					<div><input type="text" name="nhs_id" /></div>
-					<div><input type="password" name="password" /></div>
-					<button>Enter</button>
-				</div>` }
-				const routes = [
-				  { path: '/login', component: Login },
-				  { path: '/register', component: Register }
-				]
 
+				const Fetcher = require('./js/classes/Fetcher')
+				const components = require('./js/components')
+				console.log("Fetcher")
+				window.addEventListener('DOMContentLoaded', function(ev) {
+				const Home = new components.Home(user)
+				const Staff = new components.Staff(user)
+				const Administrator = new components.BoilerPlate(user, '<div>Administrator</div>')
+				const Login = new components.Login(user)
+				const Register = new components.Register(user)
+				const Rota = new components.Rota(user)
+				const RegisterAdministrator = new components.BoilerPlate(user, `
+						<div>
+							<div><input type="text" name="forename"  placeholder="First name"   v-on:change="setField" /></div>
+							<div><input type="text" name="middle_name"  placeholder="Middle name"  v-on:change="setField" /></div>
+							<div><input type="text" name="surname"  placeholder="Surname"   v-on:change="setField" /></div>
+							<div><input type="text" name="nhs_id"  placeholder="NHS ID Number"   v-on:change="setField" /></div>
+							<div><input type="text" name="nhs_trust"  placeholder="NHS Trust"   v-on:change="setField" /></div>
+							<button v-on:click="continueTo('administrator')">Continue</button>
+						</div>`)
+				const RegisterResource = new components.BoilerPlate(user, `
+						<div>
+							<div><input type="text" name="forename"  placeholder="First name"   v-on:change="setField" /></div>
+							<div><input type="text" name="middle_name"  placeholder="Middle name"   v-on:change="setField" /></div>
+							<div><input type="text" name="surname"  placeholder="Surname"   v-on:change="setField" /></div>
+							<div><input type="text" name="nhs_id"  placeholder="NHS ID Number"   v-on:change="setField" /></div>
+							<div><input type="text" name="position"  placeholder="Position"   v-on:change="setField" /></div>
+							<div><input type="text" name="nhs_trust"  placeholder="NHS Trust"   v-on:change="setField" /></div>
+							<button v-on:click="continueTo('staff')">Continue</button>
+						</div>` )
+
+				const routes = [
+				  { 
+				  	path: '/', component: Home 
+				  },
+				  { 
+				  	path: '/login', component: Login
+				  },
+				  { path: '/register', component: Register
+
+				   },
+				   {
+				   		path: '/staff', component: Staff
+				   },
+				   {
+				   		path: '/staff/rota', component: Rota
+				   },
+				   {
+				   		path: '/administrator', component: Administrator
+				   },
+			        {
+			          path: '/register/administrator',
+			          component: RegisterAdministrator
+			        },
+			        {
+			          path: '/register/staff',
+			          component: RegisterResource
+			      	}
+				]
 				const router = new VueRouter({
 				  routes // short for `routes: routes`
 				})
 
-				const Fetcher = require('./js/classes/Fetcher')
-				console.log("Fetcher")
-				window.addEventListener('DOMContentLoaded', function(ev) {
 					var app = new Vue({
 						router: router,
 						data: {
-							message: 'Welcome to the NHS Roll Call app'
+							message: 'Welcome to the NHS Roll Call app',
+							user: user
 						}
 					}).$mount('#app')
 
