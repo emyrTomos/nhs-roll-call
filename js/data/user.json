@@ -33,12 +33,43 @@
             "date": 12,
             "month": 4,
             "year": 2020,
-            "start": "10:00",
-            "duration": "20:00"
+            "start": "10",
+            "duration": "8"
         },
-        "reason" : ""
+        "reason" : "working"
+
+        },
+        { "time" : {
+            "date": 13,
+            "month": 4,
+            "year": 2020,
+            "start": "0",
+            "duration": "24"
+        },
+        "reason" : "diagnosed"
+
+        },
+        { "time" : {
+            "date": 14,
+            "month": 4,
+            "year": 2020,
+            "start": "0",
+            "duration": "24"
+        },
+        "reason" : "diagnosed"
+
+        },
+        { "time" : {
+            "date": 15,
+            "month": 4,
+            "year": 2020,
+            "start": "0",
+            "duration": "24"
+        },
+        "reason" : "diagnosed"
 
         }
+
     ],
     "defaultAsAvailable": true
 }

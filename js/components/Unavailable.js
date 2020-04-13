@@ -1,24 +1,18 @@
 const BaseRollCallComponent = require('./BaseComponent')
-function Rota(user){
+function Unavailable(user){
 	const statusTypes = require('../data/status_types')
 	console.log("STATUS TYPES: ", statusTypes)
   BaseRollCallComponent.prototype.constructor.call(this, user)
   this.template = `<div><div id="calendar_container"></div><div id="time_selector">
-		</div>
-		<router-link to="/staff" tag="button">Back</router-link>
-		</div>`
+		</div><router-link to="/staff" tag="button">Back</router-link></div>`
   this.mounted = function(){
-					const updateDays = function(timesUnavailable) {
-
-					}
-					const timesUnavailable = user.timesUnavailable.filter(time => time.reason === "working")
-					console.log(timesUnavailable)
+					//const timesUnavailable = JSON.parse(JSON.stringify(user.timesUnavailable.filter(time => time.reason === "working")))
+					console.log(user.timesUnavailable)
 					const markCalendar = function(aDate) {
 						let retVal = ""
-						for (var i = 0; i<timesUnavailable.length; i++)	{					
-							console.log("DATE::: ", aDate.getMonth(), aDate.getDate(), " Times::: ", timesUnavailable[i])
-							if(aDate.getMonth() === timesUnavailable[i].time.month - 1 && aDate.getDate() === timesUnavailable[i].time.date) {
-								retVal = timesUnavailable[i].reason
+						for (var i = 0; i<user.timesUnavailable.length; i++)	{					
+							if(aDate.getMonth() === user.timesUnavailable[i].time.month - 1 && aDate.getDate() === user.timesUnavailable[i].time.date) {
+								retVal = user.timesUnavailable[i].reason
 							}
 						}
 						return retVal
@@ -26,21 +20,23 @@ function Rota(user){
 					const calendar = new dhx.Calendar("calendar_container", 
 						{mark: markCalendar}
 					)
-					console.log("timesUnavailable", timesUnavailable)
 					calendar.events.on("Change",function(date, oldDate, click){
-/*						const calendar = new dhx.Calendar("calendar_container", 
-							{mark: markCalendar}
-						)
-						
-*/						console.log(user)
+						console.log(user)
 						let year = date.getFullYear()
 						let month = date.getMonth() +1
 						let day = date.getDate()
 						console.log(year, month, day)
 						document.getElementById("time_selector").innerHTML = `<div id="show-date">${date}</div>`
-						for (i=0; i<timesUnavailable.length; i++) {
-
-						}
+						console.log(user.timesUnavailable)
+						const unavailable = user.timesUnavailable.filter(function(u) 
+							{
+								console.log(u.time, u.time.date, day, u.time.month, month)
+								return (u.time.date === day && u.time.month === month)
+							})
+						let hours = document.createElement('select')
+						hours.setAttribute('multiple', 'true')
+						hours.setAttribute('size', '24')
+						hours.setAttribute('class', 'times')
 						const changer = function(ev) {
 							const oldDropDown = document.getElementById('change_status')
 							if (oldDropDown) {
@@ -79,17 +75,21 @@ function Rota(user){
 
 						for(let i = 0; i < 24; i++) {
 							let option = document.createElement('option')
-							if (!!!availability[i]) {
-								if (user.defaultAsAvailable) {
-									availability[i] = 'available'
-								} else {
-									availability[i] = 'unavailable'
-								}
+							const availability = unavailable.filter(function(u) {
+								console.log("TIME::: ", u.time)
+								return (i >= u.time.start && i < (u.time.start + u.time.duration))
+							})
+							if (availability && availability.length) {
+								console.log("AVAILABILITY::: ", availability, availability[0].reason)
+								option.innerText = (i + 1) + ' : ' + statusTypes[availability[0].reason]
 							}
-								option.innerText = (i + 1) + ' : ' + (statusTypes[availability[i]] || 'N/A')
+							 else {
+								option.innerText = (i + 1) + ' : ' + statusTypes['available']
+							}
+
 							option.setAttribute('value', i)
-							if (availability[i]) {
-								option.setAttribute('class', availability[i])
+							if (availability && availability.length) {
+								option.setAttribute('class', availability[0].reason)
 							}
 							hours.appendChild(option)
 							hours.addEventListener('change', changer)
@@ -100,7 +100,7 @@ function Rota(user){
   }
 }
 
-Rota.prototype = Object.create(BaseRollCallComponent);
-Rota.prototype.constructor = Rota
+Unavailable.prototype = Object.create(BaseRollCallComponent);
+Unavailable.prototype.constructor = Unavailable
 
-module.exports = Rota
+module.exports = Unavailable
