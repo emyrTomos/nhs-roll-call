@@ -8,19 +8,7 @@ function Unavailable(user){
   this.mounted = function(){
 					//const timesUnavailable = JSON.parse(JSON.stringify(user.timesUnavailable.filter(time => time.reason === "working")))
 					console.log(user.timesUnavailable)
-					const markCalendar = function(aDate) {
-						let retVal = ""
-						for (var i = 0; i<user.timesUnavailable.length; i++)	{					
-							if(aDate.getMonth() === user.timesUnavailable[i].time.month - 1 && aDate.getDate() === user.timesUnavailable[i].time.date) {
-								retVal = user.timesUnavailable[i].reason
-							}
-						}
-						return retVal
-					}
-					const calendar = new dhx.Calendar("calendar_container", 
-						{mark: markCalendar}
-					)
-					calendar.events.on("Change",function(date, oldDate, click){
+					const calendarHandler = function(date, oldDate, click){
 						console.log(user)
 						let year = date.getFullYear()
 						let month = date.getMonth() +1
@@ -62,13 +50,29 @@ function Unavailable(user){
 								dropDown.appendChild(option)
 							})
 							dropDown.addEventListener('change', function(ev) {
-								console.log('Change ', this, ev)
+								console.log('Change ', this, ev, selected)
+								const start = selected[0].value
+								const duration = selected.length
 								for(var i = 0; i< selected.length; i++) {
-									availability[selected[i].value] = this.value
 									selected[i].setAttribute('class', this.value)
 									const displayValue = (parseInt(selected[i].value) + 1)
 									selected[i].innerText = displayValue + " : " + statusTypes[this.value]
 								}
+								user.timesUnavailable.push({ 
+										time : {
+							            date: day,
+							            month: month,
+							            year: 2020,
+							            start: start,
+							            duration: duration
+							        },
+							        reason: this.value
+							    })
+								console.log(user)
+								document.getElementById("calendar_container").innerHTML = ""
+								calendar = new dhx.Calendar("calendar_container", {mark: markCalendar})
+								calendar.events.on("Change", calendarHandler)
+
 							})
 							document.getElementById("time_selector").appendChild(dropDown)			
 						}
@@ -95,7 +99,20 @@ function Unavailable(user){
 							hours.addEventListener('change', changer)
 						}
 						document.getElementById("time_selector").appendChild(hours)			
-				})
+				}
+					const markCalendar = function(aDate) {
+						let retVal = ""
+						for (var i = 0; i<user.timesUnavailable.length; i++)	{					
+							if(aDate.getMonth() === user.timesUnavailable[i].time.month - 1 && aDate.getDate() === user.timesUnavailable[i].time.date) {
+								retVal = user.timesUnavailable[i].reason
+							}
+						}
+						return retVal
+					}
+					let calendar = new dhx.Calendar("calendar_container", 
+						{mark: markCalendar}
+					)
+					calendar.events.on("Change", calendarHandler)
 
   }
 }
