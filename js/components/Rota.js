@@ -2,12 +2,12 @@ const BaseRollCallComponent = require('./BaseComponent')
 function Rota(user){
 	const statusTypes = require('../data/status_types')
 	console.log("STATUS TYPES: ", statusTypes)
-  BaseRollCallComponent.prototype.constructor.call(this, user)
-  this.template = `<div><div id="calendar_container"></div><div id="time_selector">
+	BaseRollCallComponent.prototype.constructor.call(this, user)
+	this.template = `<div><div id="calendar_container"></div><div id="time_selector">
 		</div>
 		<router-link to="/staff" tag="button">Back</router-link>
 		</div>`
-  this.mounted = function(){
+	this.mounted = function(){
 					const updateDays = function(timesUnavailable) {
 
 					}

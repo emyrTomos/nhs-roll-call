@@ -1,6 +1,5 @@
 function Fetcher(config){
-  Fetcher.prototype.constructor.call(this, config)
-  this.view = view
+  Fetcher.prototype.constructor.call(this)
   this.config = config
 }
 
@@ -15,14 +14,17 @@ Fetcher.prototype.create = function(path, user, payload) {
 
 Fetcher.prototype.retieve = function(path, user, payload) {
 	const method = "GET"
+	return user
 };
 
 Fetcher.prototype.update = function(path, user, payload) {
 	const method = "PUT"
+	return user
 };
 
 Fetcher.prototype.delete = function(path, payload) {
 	const method = "DELETE"
+	return user
 };
 
 module.exports = Fetcher
